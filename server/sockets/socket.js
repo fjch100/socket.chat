@@ -6,8 +6,8 @@ const usuarios = new Usuarios();
 
 io.on('connection', (client) => {
 
+    //evento de entrada de un nuevo usuario en el chat/sala
     client.on('entrarChat', function(data, callback) {
-        // console.log('entrarChat:', data);
         if (!data.nombre || !data.sala) {
             return callback({
                 error: true,
@@ -24,7 +24,6 @@ io.on('connection', (client) => {
 
     client.on('disconnect', (data) => {
         let personaBorrada = usuarios.borrarPersona(client.id);
-        // console.log('personaBorrada: ', personaBorrada);
         client.broadcast.to(personaBorrada.sala).emit('crearMensaje', crearMensaje('administrador',
             `el usuario: ${personaBorrada.nombre} abandono el chat`));
         client.broadcast.to(personaBorrada.sala).emit('listaPersona', usuarios.getPersonasPorSala(personaBorrada.sala));

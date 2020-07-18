@@ -1,8 +1,15 @@
 # Socket-Chat:
 
-Aplicacion y servidor de Chat basada en Node.js y WebSocket
+## Aplication and Chat Server done with Node.js, Express y Socket.io
 
-Recuerden que deben de reconstruir los módulos de node con el comando
+### Welcome Screen:
+![Welcome Screen](public/assets/images/Screen_welcome.png)
+
+### Chat Screen:
+![Chat Screen](public/assets/images/Screen_chat.png)
+
+
+Remember to rebuild the node_modules directory with:
 
 ```
 npm install

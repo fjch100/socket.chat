@@ -1,11 +1,9 @@
+//lee los parametros que trae el URL
 var params = new URLSearchParams(window.location.search);
-
-
 var sala = params.get('sala');
 var nombre = params.get('nombre');
 var chatSala = document.getElementById('chatSala');
 chatSala.textContent = ' ' + sala;
-
 
 //referencias de Jquery
 var divUsuarios = $('#divUsuarios');
@@ -23,29 +21,31 @@ function renderizarUsuarios(personas) { //personas = [{},{},{}]
         html += '<li>';
         html += '   <a data-id="' + personas[i].id + '" href="javascript:void(0)"><img src="assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>' + personas[i].nombre + '<small class="text-success">online</small></span></a>';
         html += '</li>';
-
     };
     divUsuarios.html(html);
-}
+};
 
-//Jquery Listeners
+//--------------- Jquery Listeners------------------------------
+
+//evento al cliclear un usuario, para enviar un mensaje privado
+// TO DO: abrir otro pagina (sala de chat) con solo los dos usuarios
+// y manejar ese chat aparte
 divUsuarios.on('click', 'a', function() {
     var id = $(this).data('id');
     if (!id) return;
-    // console.log(id);
 });
 
+//evento submit, envia el mensaje escrito al servidor  y rederiza el mensaje en la pantalla 
 formEnviar.on('submit', function(e) {
     e.preventDefault();
     if (txtMensaje.val().trim().length === 0) {
         return;
     }
-
+    // envia el mensaje al servidor
     socket.emit('crearMensaje', {
         nombre: nombre,
         mensaje: txtMensaje.val()
     }, function(mensaje) {
-        // console.log('crearMensaje, respuesta server: ', mensaje);
         txtMensaje.val('').focus();
         renderizarMensajes(mensaje);
         scrollBottom()
@@ -82,9 +82,9 @@ function renderizarMensajes(mensaje) {
     html += '<div class="chat-time">' + new Date(mensaje.fecha).toLocaleTimeString() + '</div>';
     html += '</li>';
     divChatbox.append(html);
-
 };
 
+//funcion para hacer scroll automatico cuando agregamos un nuevo mensaje a la pantalla
 function scrollBottom() {
     // selectors
     var newMessage = divChatbox.children('li:last-child');
@@ -101,13 +101,13 @@ function scrollBottom() {
     }
 };
 
-var listapersonas;
+var listapersonas; // lista de personas actuales en el chat o sala
 var txtContacto = document.getElementById('txtContacto');
 
+//evento para buscar un contacto
 txtContacto.addEventListener('keyup', function(e) {
     buscarTxt = txtContacto.value;
     regex = new RegExp(buscarTxt, 'ig');
     var listaencontrada = listapersonas.filter(persona => persona.nombre.match(regex));
-    console.log(listaencontrada);
     renderizarUsuarios(listaencontrada);
 });

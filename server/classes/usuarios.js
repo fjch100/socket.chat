@@ -1,13 +1,12 @@
 class Usuarios {
 
     constructor() {
-        this.personas = [];
+        this.personas = []; //listado de personas/usuarios
     };
 
     agregarPersona(id, nombre, sala) {
         let persona = { id, nombre, sala };
         this.personas.push(persona);
-        console.log('personas(agregarPersonas):', this.personas);
         return this.getPersonasPorSala(sala);
     };
 
@@ -28,14 +27,10 @@ class Usuarios {
     borrarPersona(id) {
         let personaBorrada = this.getPersona(id);
         this.personas = this.personas.filter(pers => pers.id != id);
-        console.log('personas(borrarPersona):', this.personas);
         return personaBorrada;
-    }
+    };
 
-}
-
-
-
+};
 
 module.exports = {
     Usuarios
